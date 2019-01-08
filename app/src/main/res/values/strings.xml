@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HAsync</string>
+    <string name="download">加载</string>
 </resources>

@@ -34,7 +34,7 @@ public class HAsyncApp extends Application {
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                 .build());
-        AsyncHttpClient.getDefaultInstance().getMiddleware().add(new StethoMiddleware());
+
         //orhanobut/logger
         Logger.addLogAdapter(new AndroidLogAdapter() {
             @Override
