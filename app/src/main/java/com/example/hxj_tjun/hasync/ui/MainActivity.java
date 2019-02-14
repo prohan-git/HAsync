@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.hxj_tjun.hasync.R;
-import com.facebook.stetho.Stetho;
+
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.AsyncHttpGet;
 import com.koushikdutta.async.http.AsyncHttpPost;
@@ -21,7 +21,6 @@ import com.koushikdutta.async.http.BasicNameValuePair;
 import com.koushikdutta.async.http.NameValuePair;
 import com.koushikdutta.async.http.body.UrlEncodedFormBody;
 import com.koushikdutta.async.http.cache.ResponseCacheMiddleware;
-import com.koushikdutta.async.stetho.StethoMiddleware;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AsyncHttpClient.getDefaultInstance().getMiddleware().add(new StethoMiddleware());
         init();
     }
 

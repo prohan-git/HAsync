@@ -1,1 +1,1 @@
-include ':app', ':AndroidAsync', ':AndroidAsyncStetho'
+include ':app', ':AndroidAsync', ':AndroidAsyncStetho', ':hnettylibrary'
