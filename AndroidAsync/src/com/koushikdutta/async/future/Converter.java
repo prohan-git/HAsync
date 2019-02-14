@@ -25,6 +25,7 @@ public class Converter<R> {
             this.data = data;
             this.mime = mime;
         }
+
         T data;
         String mime;
     }
@@ -55,12 +56,12 @@ public class Converter<R> {
 
             // wait on the incoming value and convert it
             converting.data.thenConvert(data -> converter.convert(data, mime)).
-            setCallback((e, result1) -> {
-                if (e != null)
-                    converted.setComplete(e);
-                else
-                    converted.setComplete(result1);
-            });
+                    setCallback((e, result1) -> {
+                        if (e != null)
+                            converted.setComplete(e);
+                        else
+                            converted.setComplete(result1);
+                    });
         }
     }
 
@@ -80,6 +81,7 @@ public class Converter<R> {
             this.type = type;
             this.mime = mime;
         }
+
         Class<T> type;
         String mime;
 
@@ -90,7 +92,7 @@ public class Converter<R> {
 
         @Override
         public boolean equals(Object obj) {
-            MimedType other = (MimedType)obj;
+            MimedType other = (MimedType) obj;
             return type.equals(other.type) && mime.equals(other.mime);
         }
 
@@ -146,10 +148,11 @@ public class Converter<R> {
                 return;
             set.putAll(more);
         }
+
         public ConverterTransformers<F, T> getAll(MimedType<T> mimedType) {
             ConverterTransformers<F, T> ret = new ConverterTransformers<>();
 
-            for (MimedType candidate: keySet()) {
+            for (MimedType candidate : keySet()) {
                 if (candidate.isTypeOf(mimedType))
                     add(ret, get(candidate));
             }
@@ -166,6 +169,7 @@ public class Converter<R> {
 
     MultiFuture<R> future = new MultiFuture<>();
     String futureMime;
+
     protected Converter(Future future, String mime) {
         if (mime == null)
             mime = MIME_ALL;
@@ -186,7 +190,7 @@ public class Converter<R> {
         if (outputs == null) {
             outputs = new Converters<>();
             ConverterEntries converters = getConverters();
-            for (ConverterEntry entry: converters.list) {
+            for (ConverterEntry entry : converters.list) {
                 outputs.ensure(entry.from).put(entry.to, new MultiTransformer<>(entry.typeConverter, entry.to.mime, entry.distance));
             }
         }
@@ -197,7 +201,7 @@ public class Converter<R> {
         if (search(target, bestMatch, currentPath, new MimedType(fromClass, futureMime), new HashSet<MimedType>())) {
             PathInfo current = bestMatch.removeFirst();
 
-            new SimpleFuture<>(new MimedData<>((Future<Object>)future, futureMime)).setCallback(current.transformer);
+            new SimpleFuture<>(new MimedData<>((Future<Object>) future, futureMime)).setCallback(current.transformer);
 
             while (!bestMatch.isEmpty()) {
                 PathInfo next = bestMatch.removeFirst();
@@ -205,7 +209,7 @@ public class Converter<R> {
                 current = next;
             }
 
-            return ((MultiTransformer<T, Object>)current.transformer).then(from -> from.data);
+            return ((MultiTransformer<T, Object>) current.transformer).then(from -> from.data);
         }
 
         return new SimpleFuture<>(new InvalidObjectException("unable to find converter"));
@@ -218,7 +222,7 @@ public class Converter<R> {
 
         static int distance(ArrayDeque<PathInfo> path) {
             int distance = 0;
-            for (PathInfo entry: path) {
+            for (PathInfo entry : path) {
                 distance += entry.transformer.distance;
             }
             return distance;
@@ -258,7 +262,7 @@ public class Converter<R> {
         boolean found = false;
         searched.add(currentSearch);
         ConverterTransformers<Object, Object> converterTransformers = outputs.getAll(currentSearch);
-        for (MimedType candidate: converterTransformers.keySet()) {
+        for (MimedType candidate : converterTransformers.keySet()) {
             // this simulates the mime results of a transform
             MimedType newSearch = new MimedType(candidate.type, mimeReplace(currentSearch.mime, candidate.mime));
 
@@ -269,8 +273,7 @@ public class Converter<R> {
             currentPath.addLast(path);
             try {
                 found |= search(target, bestMatch, currentPath, newSearch, searched);
-            }
-            finally {
+            } finally {
                 currentPath.removeLast();
             }
         }
@@ -286,8 +289,9 @@ public class Converter<R> {
     }
 
     private static final String MIME_ALL = "*/*";
+
     public <T> Future<T> to(Class<T> clazz, String mime) {
-        return future.then(from -> to(from, clazz ,mime));
+        return future.then(from -> to(from, clazz, mime));
     }
 
     static class ConverterEntry<F, T> {
@@ -297,6 +301,7 @@ public class Converter<R> {
             this.distance = distance;
             this.typeConverter = typeConverter;
         }
+
         MimedType<F> from;
         MimedType<T> to;
         int distance;
@@ -309,13 +314,14 @@ public class Converter<R> {
 
         @Override
         public boolean equals(Object obj) {
-            ConverterEntry other = (ConverterEntry)obj;
+            ConverterEntry other = (ConverterEntry) obj;
             return from.equals(other.from) && to.equals(other.to);
         }
     }
 
     public static class ConverterEntries {
         public ArrayList<ConverterEntry> list = new ArrayList<>();
+
         public ConverterEntries() {
         }
 
@@ -326,6 +332,7 @@ public class Converter<R> {
         public synchronized <F, T> void addConverter(Class<F> from, String fromMime, Class<T> to, String toMime, TypeConverter<T, F> typeConverter) {
             addConverter(from, fromMime, to, toMime, 1, typeConverter);
         }
+
         public synchronized <F, T> void addConverter(Class<F> from, String fromMime, Class<T> to, String toMime, int distance, TypeConverter<T, F> typeConverter) {
             if (fromMime == null)
                 fromMime = MIME_ALL;
@@ -336,7 +343,7 @@ public class Converter<R> {
         }
 
         public synchronized boolean removeConverter(TypeConverter typeConverter) {
-            for (ConverterEntry entry: list) {
+            for (ConverterEntry entry : list) {
                 if (entry.typeConverter == typeConverter)
                     return list.remove(entry);
             }

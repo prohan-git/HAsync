@@ -32,8 +32,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':AndroidAsync')
     implementation project(':AndroidAsyncStetho')
-
     //第三方依赖
     //logger
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation files('libs/netty-all-4.1.33.Final.jar')
 }
