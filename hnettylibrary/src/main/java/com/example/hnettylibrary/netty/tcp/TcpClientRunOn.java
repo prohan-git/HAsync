@@ -16,6 +16,10 @@
 
 package com.example.hnettylibrary.netty.tcp;
 
+import android.os.Build;
+
+import com.example.hnettylibrary.netty.resources.LoopResources;
+
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -59,14 +63,16 @@ final class TcpClientRunOn extends TcpClientOperator {
 
 		EventLoopGroup elg = resources.onClient(useNative);
 
-		if (useDelegate && elg instanceof Supplier) {
-			EventLoopGroup delegate = (EventLoopGroup) ((Supplier) elg).get();
-			b.group(delegate)
-			 .channel(resources.onChannel(delegate));
-		}
-		else {
-			b.group(elg)
-			 .channel(resources.onChannel(elg));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			if (useDelegate && elg instanceof Supplier) {
+				EventLoopGroup delegate = (EventLoopGroup) ((Supplier) elg).get();
+				b.group(delegate)
+				 .channel(resources.onChannel(delegate));
+			}
+			else {
+				b.group(elg)
+				 .channel(resources.onChannel(elg));
+			}
 		}
 	}
 }

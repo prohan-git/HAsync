@@ -23,10 +23,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.SocketChannel;
-import reactor.core.CoreSubscriber;
-import reactor.core.Disposable;
-import reactor.core.publisher.Mono;
-
 /**
  * Hold contextual information for the underlying channel and provide for
  * non-blocking resource disposing API

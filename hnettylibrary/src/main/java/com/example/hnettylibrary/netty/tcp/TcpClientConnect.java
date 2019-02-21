@@ -62,7 +62,6 @@ final class TcpClientConnect extends TcpClient {
 					TcpResources.get(),
 					maxConnections != -1);
 		}
-
 		return provider.acquire(b);
 
 	}

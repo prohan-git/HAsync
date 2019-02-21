@@ -81,6 +81,7 @@ public interface Connection extends DisposableChannel {
 
 	 */
 	default Connection addHandler(ChannelHandler handler){
+
 		return addHandler(handler.getClass().getSimpleName(), handler);
 	}
 

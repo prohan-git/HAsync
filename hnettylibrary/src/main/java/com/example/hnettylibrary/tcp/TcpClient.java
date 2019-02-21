@@ -23,7 +23,6 @@ public abstract class TcpClient {
 
     public abstract Connection connect(Bootstrap b);
 
-
     static final int DEFAULT_PORT = System.getenv("PORT") != null ? Integer.parseInt(System.getenv("PORT")) : 12012;
 
     static final Bootstrap DEFAULT_BOOTSTRAP = new Bootstrap().option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)

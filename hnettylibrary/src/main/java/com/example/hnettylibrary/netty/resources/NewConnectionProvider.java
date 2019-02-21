@@ -68,8 +68,7 @@ final class NewConnectionProvider implements ConnectionProvider {
 					new NewConnectionObserver(sink, obs));
 
 			ChannelFuture f;
-			if (bootstrap.config()
-			             .remoteAddress() != null) {
+			if (bootstrap.config().remoteAddress() != null) {
 				f = bootstrap.connect();
 			}
 			else {
